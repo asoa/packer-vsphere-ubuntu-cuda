@@ -1,0 +1,50 @@
+stages:
+  - packer_validate
+  - packer_build
+
+
+default:
+  before_script:
+    - |
+      sed -i "s|#{vcenter_username}#|$gitlab_vcenter_username|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_password}#|$gitlab_vcenter_password|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{admin_username}#|$gitlab_admin_username|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{admin_password}#|$gitlab_admin_password|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{build_username}#|$gitlab_build_username|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{build_password}#|$gitlab_build_password|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{build_password_encrypted}#|$gitlab_build_password_encrypted|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_server}#|$gitlab_vcenter_server|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_datacenter}#|$gitlab_vcenter_datacenter|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_cluster}#|$gitlab_vcenter_cluster|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_folder}#|$gitlab_vcenter_folder|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_datastore}#|$gitlab_vcenter_datastore|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_network}#|$gitlab_vcenter_network|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{gitlab_hostname}#|$gitlab_hostname|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{gitlab_access_token}#|$gitlab_access_token|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vcenter_content_library}#|$gitlab_vcenter_content_library|g" packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{vm_name}#|$gitlab_vm_name|g" packer/ubuntu.pkr.hcl packer/ubuntu.auto.pkrvars.hcl
+      sed -i "s|#{ssh_public_key}#|$gitlab_ssh_public_key|g" packer/ubuntu.auto.pkrvars.hcl
+packer_validate:
+  stage: packer_validate
+  tags:
+    - docker
+  image:
+    name: hashicorp/packer:1.10.3
+    entrypoint: 
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'    
+  script:
+    - packer init packer/ubuntu.pkr.hcl
+    - packer validate --var-file=packer/ubuntu.auto.pkrvars.hcl ./packer
+    - cat packer/ubuntu.auto.pkrvars.hcl
+    - cat packer/ubuntu.pkr.hcl
+
+packer_build:
+  stage: packer_build
+  tags: 
+    - docker
+  image: asoa/azure-runner:3.0.0
+  script:
+    - packer init packer/ubuntu.pkr.hcl
+    - packer build --var-file=packer/ubuntu.auto.pkrvars.hcl ./packer
+    
