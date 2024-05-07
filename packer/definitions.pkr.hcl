@@ -196,6 +196,7 @@ variable "description" {
 
 variable "import_ovf" {
   type    = bool
+  description = "When set to true, Packer will import and OVF template to the content library item. Defaults to false"
   default = true
 }
 
