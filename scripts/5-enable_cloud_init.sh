@@ -20,8 +20,6 @@ autoinstall:
     variant: ''
   identity:
     hostname: $hostname
-    username: ubuntu
-    password: #{build_password_encrypted}#
 runcmd:
   - |
     #!/usr/bin/env bash

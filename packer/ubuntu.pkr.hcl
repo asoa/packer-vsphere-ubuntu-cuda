@@ -163,7 +163,13 @@ build {
     expect_disconnect = true
     inline = ["sudo reboot"]
     pause_after = "10s"
-  }  
+  }
+
+  provisioner "shell" {
+    execute_command = "echo '${var.build_password}' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+    scripts = ["scripts/4-generalize.sh", "scripts/5-enable_cloud_init.sh"]
+    pause_before = "15s"
+  }
 
   post-processor "manifest" {
         output              = "manifest.txt"

@@ -9,7 +9,7 @@ Used code from the following github repos to create this packer build:
 ## Prerequisites
 1. packer must be installed on system running packer build
 1. download ubuntu version 22.04 iso (e.g. distrowatch.com)
-1. nfs datastore mounted in vsphere to store photon iso used during packer build
+1. nfs datastore mounted in vsphere to store iso used during packer build
 ![](./docs/nfs.png)
 1. install make ```sudo apt install make```
 1. if using gitlab to run packer build, you'll need the following:
