@@ -4,7 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 linux_arch="x86_64"
 cuda_version="545.29.06"
-cuda_driver_name="NVIDIA-Linux-x86_64-545.29.06.run"
+cuda_driver_name="NVIDIA-Linux-x86_64-545.29.06"
 # download cuda toolkit
 # wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 # sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
